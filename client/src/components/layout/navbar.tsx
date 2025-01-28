@@ -9,6 +9,7 @@ export default function Navbar() {
 
   const navItems = [
     { label: "About", href: "#about" },
+    { label: "Blog", href: "/blog" },
     { label: "Testimonials", href: "#testimonials" },
     { label: "Contact", href: "#contact" },
   ];
@@ -24,13 +25,14 @@ export default function Navbar() {
 
         <div className="hidden md:flex items-center gap-8">
           {navItems.map((item) => (
-            <a
+            <Link
               key={item.href}
               href={item.href}
-              className="text-muted-foreground hover:text-primary transition-colors"
             >
-              {item.label}
-            </a>
+              <a className="text-muted-foreground hover:text-primary transition-colors">
+                {item.label}
+              </a>
+            </Link>
           ))}
           <SocialIcons className="ml-4" />
         </div>
@@ -49,14 +51,17 @@ export default function Navbar() {
         <div className="md:hidden absolute w-full bg-background border-b p-4">
           <div className="flex flex-col gap-4">
             {navItems.map((item) => (
-              <a
+              <Link
                 key={item.href}
                 href={item.href}
-                className="text-muted-foreground hover:text-primary transition-colors"
-                onClick={() => setIsMenuOpen(false)}
               >
-                {item.label}
-              </a>
+                <a
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  {item.label}
+                </a>
+              </Link>
             ))}
             <SocialIcons />
           </div>

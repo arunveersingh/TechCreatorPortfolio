@@ -1,7 +1,8 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { db } from "@db";
-import { messages, subscribers } from "@db/schema";
+import { messages, subscribers, blogPosts } from "@db/schema";
+import { desc, eq } from "drizzle-orm";
 
 export function registerRoutes(app: Express): Server {
   app.post("/api/contact", async (req, res) => {
@@ -25,6 +26,34 @@ export function registerRoutes(app: Express): Server {
       } else {
         res.status(500).json({ error: "Failed to subscribe" });
       }
+    }
+  });
+
+  // Blog routes
+  app.get("/api/blog", async (_req, res) => {
+    try {
+      const posts = await db.query.blogPosts.findMany({
+        orderBy: [desc(blogPosts.publishedAt)],
+      });
+      res.json(posts);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch blog posts" });
+    }
+  });
+
+  app.get("/api/blog/:slug", async (req, res) => {
+    try {
+      const post = await db.query.blogPosts.findFirst({
+        where: eq(blogPosts.slug, req.params.slug),
+      });
+
+      if (!post) {
+        return res.status(404).json({ error: "Blog post not found" });
+      }
+
+      res.json(post);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch blog post" });
     }
   });
 
