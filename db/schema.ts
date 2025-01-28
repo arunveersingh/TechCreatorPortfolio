@@ -1,6 +1,14 @@
 import { pgTable, text, serial, timestamp } from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 
+// Users table
+export const users = pgTable("users", {
+  id: serial("id").primaryKey(),
+  username: text("username").unique().notNull(),
+  password: text("password").notNull(),
+});
+
+// Messages table
 export const messages = pgTable("messages", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
@@ -9,12 +17,14 @@ export const messages = pgTable("messages", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// Subscribers table
 export const subscribers = pgTable("subscribers", {
   id: serial("id").primaryKey(),
   email: text("email").unique().notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// Blog posts table
 export const blogPosts = pgTable("blog_posts", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
@@ -24,6 +34,12 @@ export const blogPosts = pgTable("blog_posts", {
   publishedAt: timestamp("published_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+// Schemas and types
+export const insertUserSchema = createInsertSchema(users);
+export const selectUserSchema = createSelectSchema(users);
+export type InsertUser = typeof users.$inferInsert;
+export type SelectUser = typeof users.$inferSelect;
 
 export const insertMessageSchema = createInsertSchema(messages);
 export const selectMessageSchema = createSelectSchema(messages);
