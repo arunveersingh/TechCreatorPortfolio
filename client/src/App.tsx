@@ -8,6 +8,7 @@ import Blog from "@/pages/blog";
 import BlogPost from "@/pages/blog/[slug]";
 import AdminLogin from "@/pages/admin/login";
 import AdminDashboard from "@/pages/admin";
+import NewBlogPost from "@/pages/admin/blog/new";
 import AdminLayout from "@/components/layout/admin-layout";
 import Navbar from "@/components/layout/navbar";
 
@@ -23,6 +24,11 @@ function Router() {
           <AdminLayout>
             <AdminDashboard />
           </AdminLayout>
+        )}
+      </Route>
+      <Route path="/admin/blog/new">
+        {(params) => (
+          <NewBlogPost />
         )}
       </Route>
       <Route component={NotFound} />
